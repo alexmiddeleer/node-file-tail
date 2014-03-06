@@ -1,0 +1,31 @@
+{
+  "name": "file-tailer",
+  "version": "0.0.0",
+  "description": "Like tail -f command in unix.  Runs on Windows (no fs.watch).",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "file-size-watcher": "~0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexmiddeleer/node-file-tail.git"
+  },
+  "keywords": [
+    "tail",
+    "file",
+    "log",
+    "watch"
+  ],
+  "author": "Alex Middeleer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexmiddeleer/node-file-tail/issues"
+  }
+}

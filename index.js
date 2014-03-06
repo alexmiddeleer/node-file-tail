@@ -43,7 +43,3 @@ module.exports = {
 		return fileTailer;
 	}
 };
-
-					//}).on('data',function(chunk) {
-					//	console.log(chunk.toString());
-					//});
