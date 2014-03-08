@@ -5,14 +5,14 @@
 // -----------------------------------------------------
 var fs = require('fs'),
 	events = require('events'),
-	fileWatcher = require('fileWatcher');
+	fileWatcher = require('file-size-watcher');
 
 module.exports = {
 
 	startTailing: function(fileName, ms) {
 
 		var fileTailer = new events.EventEmitter(),
-			watcher = fileWatcher.makeFileWatcher(fileName, ms);
+			watcher = fileWatcher.watch(fileName, ms);
 
 		fs.stat(fileName, function(error, info) {
 
