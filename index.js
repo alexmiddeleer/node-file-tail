@@ -5,7 +5,7 @@
 // -----------------------------------------------------
 var fs = require('fs'),
 	events = require('events'),
-	fileWatcher = require('./fileWatcher.js');
+	fileWatcher = require('fileWatcher');
 
 module.exports = {
 
