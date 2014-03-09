@@ -28,7 +28,7 @@ Events -- filt-tail objects emit these events:
 
  * `'Error'`      -- All errors including ENOENTs are emitted through this.
  * `'tailError'`  -- `'Error'` with ENOENTs ignored; use if you don't care if the file is missing.
- * `'line'`       -- emitted whenever tailed file grows by a line (or many), unless mode is '`stream'`.
+ * `'line'`       -- emitted whenever tailed file grows by a line (or many), unless mode is `'stream'`.
  * `'stream'`     -- If mode is `'stream'`, will emit a Node.js stream object instead of lines.  Use this if you need to preserve every byte or want to handle the details yourself.
 
 Lastly, file-tail objects are just types of file-size-watchers, so you can use everything they have as well.  See (https://github.com/alexmiddeleer/node-file-size-watcher)
