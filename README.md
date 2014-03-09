@@ -19,7 +19,7 @@ Start tailing simply with a file descriptor, or pass in an object with these pro
 ```js
 startTailing({
 	fd: aFileDescriptor, // Required
-	ms: aFileCheckingInterval, // Defaults to 100ms
+	ms: aFileCheckingInterval, // Defaults to 100 (milliseconds)
 	mode: 'line', // The other option is 'stream'
 	encoding: 'utf8' // anything allowed by fs.createReadStream
 });
