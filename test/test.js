@@ -28,7 +28,7 @@ function listenForStream (tailer, cb) {
 	});
 	setTimeout(function tooSlow() {
 		if(notDone)	throw("test timed out");
-	}, 500);
+	}, tailer.conf.interval * 5);
 }
 
 function emoteSuccess (testDesc) {
@@ -37,6 +37,7 @@ function emoteSuccess (testDesc) {
 
 function streamText (stream, cb) {
 	stream.on('data',function(chunk) {
+		console.log(chunk.toString().trim());
 		cb(chunk.toString().trim());
 	});
 }
@@ -45,7 +46,11 @@ function streamText (stream, cb) {
 before(function(done){
 	console.log("Creating a test file");
 	makeFileGrow("Creating a file", function() {
-		tailer = tailMod.startTailing(fn, 100);
+		tailer = tailMod.startTailing({
+			fd : fn,
+			mode : "stream"
+		});
+		console.log('tailer config is: ' + JSON.stringify(tailer.conf));
 		done();
 	});
 });
@@ -53,8 +58,8 @@ before(function(done){
 // Test to see if tailer detects file growth.  
 describe('file-tail',function(){
 	describe('#Basic operation', function(){
-		var desc1 = "Test 1: File grows, tail emits the new text.";
-		var newText = 'testing...';
+		var desc1 = "Test 1: File grows, tail emits the new text.",
+		newText   = 'testing...';
 		it(desc1, function(done) {
 			console.log(desc1);
 			listenForStream(tailer, function(stream) {
@@ -72,97 +77,81 @@ describe('file-tail',function(){
 			});
 		});
 
-//		var desc2 = "Test 2: File grows, tailer detects this.";
-//		it(desc2, function(done) {
-//			console.log(desc2);
-//			listenForStream(tailer, function(sizeChange) {
-//				assert((sizeChange>0),"File size is positive");
-//				emoteSuccess(desc2);
-//				done();
-//			});
-//	
-//			makeFileGrow("testing... 2", function afterGrow(err) {
-//				if (err) { 
-//					done(err);
-//				} 
-//			});
-//		});
-//
-//		var desc3 = "Test 3: File shrinks, tailer detects this.";
-//		it(desc3, function(done) {
-//			console.log(desc3);
-//			listenForStream(tailer, function(sizeChange) {
-//				assert((sizeChange<0),"File size is negative");
-//				emoteSuccess(desc3);
-//				done();
-//			});
-//	
-//			makeFileShrink("testing... 3", function afterAfterShrink(err) {
-//				if (err) { 
-//					done(err);
-//				} 
-//			});
-//		});
+		var desc2 = "Test 2: File grows again, tailer again reacts correctly.";
+		newText   = 'testing... 2';
+		it(desc2, function(done) {
+			console.log(desc2);
+			listenForStream(tailer, function(stream) {
+				streamText(stream, function(resultText) {
+					assert.equal(newText,resultText);
+					emoteSuccess(desc1);
+					done();
+				});
+			});
+	
+			makeFileGrow(newText, function afterGrow(err) {
+				if (err) { 
+					done(err);
+				} 
+			});
+		});
+	});
+	
+	describe('#Line mode', function() {
+		var desc = "Test 3: It should emit lines as expected."
+		it(desc,function(done) {
+			console.log(desc);
+			var line1 = 'a couple of\n';
+			var line2 = 'lines appear\n';
+			var newText   = line1+line2,
+			x = 0;
+			tailer.removeAllListeners();
+			tailer = tailMod.startTailing(fn);
+			tailer.on('ready',function() {
+				tailer.on('line',function(line) {
+					if(x===0){
+						assert.equal(line1.trim(),line);
+					} else if (x === 1){
+						assert.equal(line2.trim(),line);
+						emoteSuccess(desc);
+						done();
+						tailer.stop();
+					}
+					x++;
+				});
+				makeFileGrow(newText, function afterGrow(err) {
+					if (err) { 
+						done(err);
+					} 
+				});
+			});
+		});
 	});
 
-	describe("controlling",function(){
-
-	//	var desc4 = "Test 4: stop tailer"
-	//	it(desc4,function(done) {
-	//		console.log(desc4);
-	//		tailer.stop();
-	//		ignoreSizeChange(tailer, function() {
-	//			emoteSuccess(desc4);
-	//			done();
-	//		});
-
-	//		makeFileGrow("testing... 4", function afterGrow(err) {
-	//			if (err) { 
-	//				done(err);
-	//			} 
-	//		});
-	//	});
-
-	//	var desc5 = "Test 5: resume tailer"
-	//	it(desc5,function(done) {
-	//		console.log(desc5);
-	//		tailer.go();
-	//		listenForStream(tailer, function(sizeChange) {
-	//			assert((sizeChange>0),"File size is positive");
-	//			emoteSuccess(desc5);
-	//			done();
-	//		});
-
-	//		makeFileGrow("testing... 5", function afterAfterShrink(err) {
-	//			if (err) { 
-	//				done(err);
-	//			} 
-	//		});
-	//	});
-	});
-
-	describe('other stuff',function() {
-	//	var desc6 = "Testing info()";
-	//	it(desc6, function() {
-	//		console.log(desc6);
-	//		console.log("Size of file is: " + tailer.info().size + " bytes");
-	//		assert(tailer.info().size>0,"tailer.info reports positive size");
-	//	});
-	//
-	//	// Delete file then test to make sure tailer emits an error event
-	//	var desc7 ='Testing error event emission';
-	//	it(desc7, function(done) {
-	//		console.log(desc7);
-	//		tailer.on('error',function(e) {
-	//			console.log("tailer correctly saw error: " + e);
-	//			assert(e.toString()!=="","Testing error msg existence");
-	//			done();
-	//		});
-	//		console.log("Removing test file...");
-	//		fs.unlink(fn, function(e) {
-	//			if(e) throw(e);
-	//		});
-	//	});
+	describe('#Edge cases', function() {
+		var desc = "Test 4: tail should proceed normally even when started on empty file.";
+		it(desc,function(done) {
+			console.log(desc);
+			var newTailer = tailMod.startTailing('doesNotExist.log'),
+			x = 0;
+			newTailer.on('error',function(e) {
+				console.log(e);
+				// We want to see at least 2 errors, not one then death.
+				if(x>0){ 
+					done();
+					emoteSuccess(desc);
+					newTailer.removeAllListeners();
+				}
+				x++;
+			});
+		});
 	});
 });
 
+after(function(done) {
+	console.log('Cleaning up test file');
+	fs.unlink(fn, function(e) {
+		if(e) throw(e);
+		done();
+	});
+});
