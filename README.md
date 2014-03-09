@@ -14,7 +14,7 @@ Usage:
 
 Options:  
 
-Start tailing simply with a file descriptor, or pass in an object with these properties:
+Start tailing with just a file descriptor string, or pass in an object with these properties:
 
 ```js
 startTailing({
