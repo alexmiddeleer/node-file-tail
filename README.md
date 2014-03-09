@@ -7,7 +7,9 @@ Usage:
 
 ```js
 	ft = fileTailer.startTailing('logfile.log');
-	ft.on('line', function(line){ // do stuff });
+	ft.on('line', function(line){
+		// do stuff
+	});
 ```
 
 Options:  
