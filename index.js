@@ -29,7 +29,7 @@ module.exports = {
 		fileTailer.conf = options; // expose these to user.
 
 		// Convenience event.  Also prevents halts if user is not catching errors
-		fileTailer.on('Error',function(e) {
+		fileTailer.on('error',function(e) {
 			if (!(e.code && e.code == "ENOENT")) {
 				fileTailer.emit('tailError', e);
 			};
