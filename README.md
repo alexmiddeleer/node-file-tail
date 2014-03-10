@@ -1,7 +1,7 @@
 node-file-tail
 ==============
 
-A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, which right now works inconsistently on Windows.  
+A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, thus works in Windows.
 
 ###Usage
 
