@@ -18,15 +18,16 @@ Start tailing with just a file descriptor string, or pass in an object with thes
 
 ```js
 startTailing({
-	fd: aFileDescriptor, // Required
-	ms: aFileCheckingInterval, // Defaults to 100 (milliseconds)
-	mode: 'line', // The other option is 'stream'
-	encoding: 'utf8' // anything allowed by fs.createReadStream
+	fd: aFileDescriptor,           // Required
+	ms: aFileCheckingInterval,     // Defaults to 100 (milliseconds)
+	mode: 'line',                  // The other option is 'stream'
+	encoding: 'utf8'               // see Node's fs.createReadStream
+	onErr: function(error){};      // immediately listen for 'error' event
 });
 ```
 Events -- filt-tail objects emit these events:
 
- * `'Error'`      -- All errors including ENOENTs are emitted through this.
+ * `'error'`      -- All errors including ENOENTs are emitted through this.
  * `'tailError'`  -- `'Error'` with ENOENTs ignored; use if you don't care if the file is missing.
  * `'line'`       -- emitted whenever tailed file grows by a line (or many), unless mode is `'stream'`.
  * `'stream'`     -- If mode is `'stream'`, will emit a Node.js stream object instead of lines.  Use this if you need to preserve every byte or want to handle the details yourself.

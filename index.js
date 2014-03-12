@@ -14,8 +14,10 @@ module.exports = {
 		var fd  = typeof options == "string" ? options : "";
 		options = typeof options == "object" ? options : {};
 
-		options.interval = options.interval      || 100;
-		options.mode     = options.mode          || 'lines';
+		options.interval = options.interval  || 100;
+		options.mode     = options.mode      || 'lines';
+		options.onErr    = options.onErr     || null;
+		options.onReady  = options.onReady   || null;
 		
 		// Allow null encoding for raw binary (want to write a unit test for this case? :D).
 		options.encoding = typeof options.encoding == "undefined" ? 'utf-8' : options.encoding;
@@ -24,7 +26,7 @@ module.exports = {
 		var ms      = options.interval,
 		mode        = options.mode,
 		encoding    = options.encoding,
-		fileTailer  = fileWatcher.watch(fd, ms);
+		fileTailer  = fileWatcher.watch(fd, ms, options.OnErr, options.onReady);
 
 		fileTailer.conf = options; // expose these to user.
 
