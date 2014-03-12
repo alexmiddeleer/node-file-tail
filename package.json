@@ -1,6 +1,6 @@
 {
   "name": "file-tailer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Like tail -f command in unix.  Runs on Windows (no fs.watch).",
   "main": "index.js",
   "directories": {
