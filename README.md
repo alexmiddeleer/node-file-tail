@@ -1,9 +1,9 @@
 node-file-tail
 ==============
 
-A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, which right now works inconsistently on Windows.  
+A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, thus works in Windows.
 
-Usage:
+###Usage
 
 ```js
 	ft = fileTailer.startTailing('logfile.log');
@@ -12,7 +12,7 @@ Usage:
 	});
 ```
 
-Options:  
+###Options 
 
 Start tailing with just a file descriptor string, or pass in an object with these properties:
 
@@ -25,7 +25,7 @@ startTailing({
 	onErr: function(error){};      // immediately listen for 'error' event
 });
 ```
-Events -- filt-tail objects emit these events:
+###Events
 
  * `'error'`      -- All errors including ENOENTs are emitted through this.
  * `'tailError'`  -- `'Error'` with ENOENTs ignored; use if you don't care if the file is missing.
@@ -34,11 +34,13 @@ Events -- filt-tail objects emit these events:
 
 Lastly, file-tail objects are just types of file-size-watchers, so you can use everything they have as well.  See (https://github.com/alexmiddeleer/node-file-size-watcher)
 
+###Example
+
 Try it out with with this little script (Use with `Node script.js fileToTail`):
 
 ```js
 var fd = process.argv[2],
-ft     = require('file-tail').startTailing(fd);
+ft = require('file-tail').startTailing(fd);
 
 ft.on('line', function(line) {
 	console.log(line);
