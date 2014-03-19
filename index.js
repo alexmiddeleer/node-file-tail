@@ -4,7 +4,6 @@
 // implemented by the filewatcher module.
 // -----------------------------------------------------
 var fs = require('fs'),
-	events = require('events'),
 	fileWatcher = require('file-size-watcher');
 
 module.exports = {
