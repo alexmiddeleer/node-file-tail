@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+  , tail = require('../index.js')
+  , ft;
+
+var defaults = {
+  interval: 100
+};
+
+program.version(require('../package.json').version)
+  .usage('<file> [options]')
+  .option('-i, --interval [int]', 'The interval in milliseconds at which to check the file for additions', defaults.interval)
+  .parse(process.argv);
+
+console.log('Watching ' + program.args[0] + '...');
+
+ft = tail.startTailing({
+  fd: program.args[0],
+  ms: program.interval
+});
+
+ft.on('line', function(line) {
+  console.log(line);
+});
