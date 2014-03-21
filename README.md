@@ -1,7 +1,7 @@
 node-file-tail
 ==============
 
-A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, thus works in Windows.
+A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends node-file-size-watcher.  Does not rely on fs.watch, thus works in Windows. Install globally for to use the cli tool.
 
 ###Usage
 
@@ -46,3 +46,11 @@ ft.on('line', function(line) {
 	console.log(line);
 });
 ```
+
+###CLI Usage
+
+To use this tool on the command line, just install it globally (`npm install -g`).  Then run `nftail <filename>`. 
+
+###Help out
+
+Bug reports, feedback, or code contributions are appreciated.  All pull requests will be reviewed.
