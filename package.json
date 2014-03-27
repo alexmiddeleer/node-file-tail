@@ -1,7 +1,7 @@
 {
   "name": "file-tail",
   "version": "0.3.0",
-  "description": "Like tail -F command in unix.  Runs on Windows (no fs.watch).  Contains command line version.",
+  "description": "Like the tail -F command in unix.  Runs on Windows (no fs.watch).  Contains command line version.",
   "main": "index.js",
   "bin": {
     "nftail": "bin/file-tail"
