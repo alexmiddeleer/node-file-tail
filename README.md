@@ -6,6 +6,7 @@ A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends 
 ###Usage
 
 ```js
+	fileTailer = require('file-tail');
 	ft = fileTailer.startTailing('logfile.log');
 	ft.on('line', function(line){
 		// do stuff
