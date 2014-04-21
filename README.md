@@ -13,6 +13,10 @@ A tiny, portable tail module for Node.js.  Similar to tail -F in Unix.  Extends 
 	});
 ```
 
+###CLI Usage
+
+To use this tool on the command line, just install it globally (`npm install -g`).  Then run `nftail <filename>`. 
+
 ###Options 
 
 Start tailing with just a file descriptor string, or pass in an object with these properties:
@@ -47,10 +51,6 @@ ft.on('line', function(line) {
 	console.log(line);
 });
 ```
-
-###CLI Usage
-
-To use this tool on the command line, just install it globally (`npm install -g`).  Then run `nftail <filename>`. 
 
 ###Help out
 
